@@ -1,3 +1,63 @@
+
+		/*
+		/////-------------------------------------------------------------------------------------
+		// Central line
+			glVertex3f(Xleft + halfSize,	Yup,				Zfront - halfSize);	// Up
+			glVertex3f(Xleft + halfSize,	Yup - halfSize,		Zfront - halfSize);	// Middle
+			glVertex3f(Xleft + halfSize,	Ydown,				Zfront - halfSize);	// Down
+		// Left edge
+			glTexCoord2f(0, 0);	glVertex3f(Xleft,	Ydown,				Zback);				// 0
+			glTexCoord2f(0, 0);	glVertex3f(Xleft,	Ydown,				Zback + halfSize);	// 1
+			glTexCoord2f(1, 0);	glVertex3f(Xleft,	Ydown,				Zfront);			// 2
+			glTexCoord2f(1, 0);	glVertex3f(Xleft,	Ydown + halfSize,	Zfront);			// 3
+			glTexCoord2f(1, 1);	glVertex3f(Xleft,	Yup,				Zfront);			// 4	
+			glTexCoord2f(1, 1);	glVertex3f(Xleft,	Yup,				Zfront - halfSize); // 5
+			glTexCoord2f(0, 1);	glVertex3f(Xleft,	Yup,				Zback);				// 6
+			glTexCoord2f(0, 1);	glVertex3f(Xleft,	Yup - halfSize,		Zback);				// 7
+			glTexCoord2f(0, 1);	glVertex3f(Xleft,	Yup - halfSize,		Zback + halfSize);	// 8 (center point)
+		// Front edge
+			glTexCoord2f(0, 0);	glVertex3f(Xleft,				Ydown,				Zfront);	// 0
+			glTexCoord2f(0, 0);	glVertex3f(Xleft + halfSize,	Ydown,				Zfront);	// 1
+			glTexCoord2f(1, 0);	glVertex3f(Xright,				Ydown,				Zfront);	// 2
+			glTexCoord2f(1, 0);	glVertex3f(Xright,				Ydown + halfSize,	Zfront);	// 3
+			glTexCoord2f(1, 1);	glVertex3f(Xright,				Yup,				Zfront);	// 4
+			glTexCoord2f(1, 1);	glVertex3f(Xright - halfSize,	Yup,				Zfront);	// 5
+			glTexCoord2f(0, 1);	glVertex3f(Xleft,				Yup,				Zfront);	// 6
+			glTexCoord2f(0, 1);	glVertex3f(Xleft,				Yup - halfSize,		Zfront);	// 7
+			glTexCoord2f(0, 1);	glVertex3f(Xleft + halfSize,	Yup - halfSize,		Zfront);	// 8
+		// Right edge
+			glTexCoord2f(0, 0);	glVertex3f(Xright,	Ydown,				Zfront);			// 0
+			glTexCoord2f(0, 0);	glVertex3f(Xright,	Ydown,				Zfront - halfSize);	// 1
+			glTexCoord2f(1, 0);	glVertex3f(Xright,	Ydown,				Zback);				// 2
+			glTexCoord2f(1, 0);	glVertex3f(Xright,	Ydown + halfSize,	Zback);				// 3
+			glTexCoord2f(1, 1);	glVertex3f(Xright,	Yup,				Zback);				// 4
+			glTexCoord2f(1, 1);	glVertex3f(Xright,	Yup,				Zback + halfSize);	// 5
+			glTexCoord2f(0, 1);	glVertex3f(Xright,	Yup,				Zfront);			// 6
+			glTexCoord2f(0, 1);	glVertex3f(Xright,	Yup - halfSize,		Zfront);			// 7
+			glTexCoord2f(0, 1);	glVertex3f(Xright,	Yup - halfSize,		Zfront - halfSize);	// 8
+		// Down edge
+			glTexCoord2f(0, 0);	glVertex3f(Xleft,				Ydown,	Zfront);			// 0
+			glTexCoord2f(0, 0);	glVertex3f(Xleft + halfSize,	Ydown,	Zfront);			// 1
+			glTexCoord2f(1, 0);	glVertex3f(Xright,				Ydown,	Zfront);			// 2
+			glTexCoord2f(1, 0);	glVertex3f(Xright,				Ydown,	Zfront - halfSize);	// 3
+			glTexCoord2f(1, 1);	glVertex3f(Xright,				Ydown,	Zback);				// 4
+			glTexCoord2f(1, 1);	glVertex3f(Xright - halfSize,	Ydown,	Zback);				// 5
+			glTexCoord2f(0, 1);	glVertex3f(Xleft,				Ydown,	Zback);				// 6
+			glTexCoord2f(0, 1);	glVertex3f(Xleft,				Ydown,	Zback + halfSize);	// 7
+			glTexCoord2f(0, 1);	glVertex3f(Xleft + halfSize,	Ydown,	Zback + halfSize);	// 8
+		// Up edge
+			glTexCoord2f(0, 0);	glVertex3f(Xleft,				Yup,	Zfront);			// 0
+			glTexCoord2f(0, 0);	glVertex3f(Xleft + halfSize,	Yup,	Zfront);			// 1
+			glTexCoord2f(1, 0);	glVertex3f(Xright,				Yup,	Zfront);			// 2
+			glTexCoord2f(1, 0);	glVertex3f(Xright,				Yup,	Zfront - halfSize);	// 3
+			glTexCoord2f(1, 1);	glVertex3f(Xright,				Yup,	Zback);				// 4
+			glTexCoord2f(1, 1);	glVertex3f(Xright - halfSize,	Yup,	Zback);				// 5
+			glTexCoord2f(0, 1);	glVertex3f(Xleft,				Yup,	Zback);				// 6
+			glTexCoord2f(0, 1);	glVertex3f(Xleft,				Yup,	Zback + halfSize);	// 7
+			glTexCoord2f(0, 1);	glVertex3f(Xleft + halfSize,	Yup,	Zback + halfSize);	// 8
+		////// ---------------------------------------------------------------------------------
+		*/
+
 #include <iostream>
 #include "gl\glut.h"
 #include "gl\GLAux.h"
@@ -178,17 +238,58 @@ void LoadTextures()
 // Cubes declarations
 //-------------------------------------------------
 #define CUBE_STATES		3
+#define SHARD_SPEED		0.01
 GLfloat CubeWallZCoord1  = -ROOM_HALF_LENGTH * 3 / 5.0,
 		CubeWallZCoord2  = -ROOM_HALF_LENGTH * 4 / 5.0;
 const GLint cubesNumber = 50;
 GLfloat cubeSize = ROOM_WIDTH / 5.0;
+GLfloat halfSize = cubeSize / 2.0;
 GLint first, last;
 
 struct Cube
 {
 	GLfloat Xleft, Xright, Yup, Ydown, Zfront, Zback;
 	GLfloat hits;
+	GLfloat shardX, shardY, shardZ;
 	GLboolean destroyed;
+	GLboolean shards;
+
+	// (x, y, z) - front left down cube vertex 
+	void DrawOnPoint(GLfloat finlen, GLfloat x, GLfloat y, GLfloat z)		
+	{
+			glBegin(GL_QUADS);
+				// Left edge
+				glTexCoord2f(0, 0);	glVertex3f(x,			y,				z - finlen);	
+				glTexCoord2f(1, 0);	glVertex3f(x,			y,				z);			
+				glTexCoord2f(1, 1);	glVertex3f(x,			y + finlen,		z);			
+				glTexCoord2f(0, 1);	glVertex3f(x,			y + finlen,		z - finlen);	
+				// Front edge
+				glTexCoord2f(0, 0);	glVertex3f(x,			y,				z);	
+				glTexCoord2f(1, 0);	glVertex3f(x + finlen,	y,				z);	
+				glTexCoord2f(1, 1);	glVertex3f(x + finlen,	y + finlen,		z);	
+				glTexCoord2f(0, 1);	glVertex3f(x,			y + finlen,		z);	
+				// Right edge
+				glTexCoord2f(0, 0);	glVertex3f(x + finlen,	y,				z);
+				glTexCoord2f(1, 0); glVertex3f(x + finlen,	y,				z - finlen);	
+				glTexCoord2f(1, 1); glVertex3f(x + finlen,	y + finlen,		z - finlen);	
+				glTexCoord2f(0, 1);	glVertex3f(x + finlen,	y + finlen,		z);
+				// Back edge
+				glTexCoord2f(0, 0);	glVertex3f(x,			y,				z - finlen);	
+				glTexCoord2f(1, 1); glVertex3f(x + finlen,	y,				z - finlen);	
+				glTexCoord2f(1, 0); glVertex3f(x + finlen,	y + finlen,		z - finlen);	
+				glTexCoord2f(0, 1);	glVertex3f(x,			y + finlen,		z - finlen);	
+				// Down edge
+				glTexCoord2f(0, 0);	glVertex3f(x,			y,				z);			
+				glTexCoord2f(1, 0);	glVertex3f(x + finlen,	y,				z);		
+				glTexCoord2f(1, 1); glVertex3f(x + finlen,	y,				z - finlen);	
+				glTexCoord2f(0, 1);	glVertex3f(x,			y,				z - finlen);	
+				// Up edge
+				glTexCoord2f(0, 0);	glVertex3f(x,			y + finlen,		z);	
+				glTexCoord2f(1, 0);	glVertex3f(x + finlen,	y + finlen,		z);	
+				glTexCoord2f(1, 1); glVertex3f(x + finlen,	y + finlen,		z - finlen);	
+				glTexCoord2f(0, 1);	glVertex3f(x,			y + finlen,		z - finlen);	
+			glEnd();		
+	}
 public:
 	void Init(GLfloat Xl, GLfloat Yd, GLfloat Zf)
 	{
@@ -200,6 +301,8 @@ public:
 		Zback = Zf - cubeSize;
 		hits = 0;
 		destroyed = GL_FALSE;
+		shards = GL_FALSE;
+		shardX = shardY = shardZ = 0;
 	}
 	void Draw()
 	{
@@ -208,67 +311,55 @@ public:
 		if (hits == 2) glBindTexture(GL_TEXTURE_2D, cubeTextures[YELLOW]);
 		if (hits == 3) glBindTexture(GL_TEXTURE_2D, cubeTextures[RED]);
 
-		glBegin(GL_QUADS);
-			// Left edge
-			glTexCoord2f(0, 0);	glVertex3f(Xleft, Ydown,	Zback);
-			glTexCoord2f(1, 0);	glVertex3f(Xleft, Ydown,	Zfront);
-			glTexCoord2f(1, 1);	glVertex3f(Xleft, Yup,		Zfront);
-			glTexCoord2f(0, 1);	glVertex3f(Xleft, Yup,		Zback);
-			// Front edge
-			glTexCoord2f(0, 0);	glVertex3f(Xleft,	Ydown,	Zfront);
-			glTexCoord2f(1, 0);	glVertex3f(Xright,	Ydown,	Zfront);
-			glTexCoord2f(1, 1);	glVertex3f(Xright,	Yup,	Zfront);
-			glTexCoord2f(0, 1);	glVertex3f(Xleft,	Yup,	Zfront);
-			// Right edge
-			glTexCoord2f(0, 0);	glVertex3f(Xright,	Ydown,	Zfront);
-			glTexCoord2f(1, 0);	glVertex3f(Xright,	Ydown,	Zback);
-			glTexCoord2f(1, 1);	glVertex3f(Xright,	Yup,	Zback);
-			glTexCoord2f(0, 1);	glVertex3f(Xright,	Yup,	Zfront);
-			// Down edge
-			glTexCoord2f(0, 0);	glVertex3f(Xleft,	Ydown,	Zfront);
-			glTexCoord2f(1, 0);	glVertex3f(Xright,	Ydown,	Zfront);
-			glTexCoord2f(1, 1);	glVertex3f(Xright,	Ydown,	Zback);
-			glTexCoord2f(0, 1);	glVertex3f(Xleft,	Ydown,	Zback);
-			// Up edge
-			glTexCoord2f(0, 0);	glVertex3f(Xleft,	Yup,	Zfront);
-			glTexCoord2f(1, 0);	glVertex3f(Xright,	Yup,	Zfront);
-			glTexCoord2f(1, 1);	glVertex3f(Xright,	Yup,	Zback);
-			glTexCoord2f(0, 1);	glVertex3f(Xleft,	Yup,	Zback);
-		glEnd();
+		DrawOnPoint(cubeSize, Xleft, Ydown, Zfront);
+		//glBegin(GL_QUADS);
+		//	// Left edge
+		//	glTexCoord2f(0, 0);	glVertex3f(Xleft,	Ydown,	Zback);
+		//	glTexCoord2f(1, 0);	glVertex3f(Xleft,	Ydown,	Zfront);
+		//	glTexCoord2f(1, 1);	glVertex3f(Xleft,	Yup,	Zfront);
+		//	glTexCoord2f(0, 1);	glVertex3f(Xleft,	Yup,	Zback);
+		//	// Front edge
+		//	glTexCoord2f(0, 0);	glVertex3f(Xleft,	Ydown,	Zfront);
+		//	glTexCoord2f(1, 0);	glVertex3f(Xright,	Ydown,	Zfront);
+		//	glTexCoord2f(1, 1);	glVertex3f(Xright,	Yup,	Zfront);
+		//	glTexCoord2f(0, 1);	glVertex3f(Xleft,	Yup,	Zfront);
+		//	// Right edge
+		//	glTexCoord2f(0, 0);	glVertex3f(Xright,	Ydown,	Zfront);
+		//	glTexCoord2f(1, 0);	glVertex3f(Xright,	Ydown,	Zback);
+		//	glTexCoord2f(1, 1);	glVertex3f(Xright,	Yup,	Zback);
+		//	glTexCoord2f(0, 1);	glVertex3f(Xright,	Yup,	Zfront);
+		//	// Down edge
+		//	glTexCoord2f(0, 0);	glVertex3f(Xleft,	Ydown,	Zfront);
+		//	glTexCoord2f(1, 0);	glVertex3f(Xright,	Ydown,	Zfront);
+		//	glTexCoord2f(1, 1);	glVertex3f(Xright,	Ydown,	Zback);
+		//	glTexCoord2f(0, 1);	glVertex3f(Xleft,	Ydown,	Zback);
+		//	// Up edge
+		//	glTexCoord2f(0, 0);	glVertex3f(Xleft,	Yup,	Zfront);
+		//	glTexCoord2f(1, 0);	glVertex3f(Xright,	Yup,	Zfront);
+		//	glTexCoord2f(1, 1);	glVertex3f(Xright,	Yup,	Zback);
+		//	glTexCoord2f(0, 1);	glVertex3f(Xleft,	Yup,	Zback);
+		//glEnd();
 	}
-
 	void DrawParts()
 	{
-		glBindTexture(GL_TEXTURE_2D, cubeTextures[RED]);
-		glBegin(GL_QUADS);
-			// Left edge
-			glTexCoord2f(0, 0);	glVertex3f(Xleft,	Ydown,	Zback);
-			glTexCoord2f(1, 0);	glVertex3f(Xleft,	Ydown,	Zfront);
-			glTexCoord2f(1, 1);	glVertex3f(Xleft,	Yup,	Zfront);
-			glTexCoord2f(0, 1);	glVertex3f(Xleft,	Yup,	Zback);
-			// Front edge
-			glTexCoord2f(0, 0);	glVertex3f(Xleft,	Ydown,	Zfront);
-			glTexCoord2f(1, 0);	glVertex3f(Xright,	Ydown,	Zfront);
-			glTexCoord2f(1, 1);	glVertex3f(Xright,	Yup,	Zfront);
-			glTexCoord2f(0, 1);	glVertex3f(Xleft,	Yup,	Zfront);
-			// Right edge
-			glTexCoord2f(0, 0);	glVertex3f(Xright,	Ydown,	Zfront);
-			glTexCoord2f(1, 0);	glVertex3f(Xright,	Ydown,	Zback);
-			glTexCoord2f(1, 1);	glVertex3f(Xright,	Yup,	Zback);
-			glTexCoord2f(0, 1);	glVertex3f(Xright,	Yup,	Zfront);
-			// Down edge
-			glTexCoord2f(0, 0);	glVertex3f(Xleft,	Ydown,	Zfront);
-			glTexCoord2f(1, 0);	glVertex3f(Xright,	Ydown,	Zfront);
-			glTexCoord2f(1, 1);	glVertex3f(Xright,	Ydown,	Zback);
-			glTexCoord2f(0, 1);	glVertex3f(Xleft,	Ydown,	Zback);
-			// Up edge
-			glTexCoord2f(0, 0);	glVertex3f(Xleft,	Yup,	Zfront);
-			glTexCoord2f(1, 0);	glVertex3f(Xright,	Yup,	Zfront);
-			glTexCoord2f(1, 1);	glVertex3f(Xright,	Yup,	Zback);
-			glTexCoord2f(0, 1);	glVertex3f(Xleft,	Yup,	Zback);
-		glEnd();		
-	}
+		glBindTexture(GL_TEXTURE_2D, cubeTextures[RED]);	
 
+		shardZ += SHARD_SPEED;
+		shardY += SHARD_SPEED;
+		shardX += SHARD_SPEED / 2.5;
+
+		DrawOnPoint(halfSize, Xleft - shardX,				Ydown - shardY,				Zfront + shardZ);
+		DrawOnPoint(halfSize, Xleft + halfSize + shardX,	Ydown - shardY,				Zfront + shardZ);
+		DrawOnPoint(halfSize, Xleft - shardX,				Ydown + halfSize - shardY,	Zfront + shardZ);
+		DrawOnPoint(halfSize, Xleft + halfSize + shardX,	Ydown + halfSize - shardY,	Zfront + shardZ);
+		DrawOnPoint(halfSize, Xleft - shardX,				Ydown - shardY,				Zfront - halfSize + shardZ);
+		DrawOnPoint(halfSize, Xleft + halfSize - shardX,	Ydown - shardY,				Zfront - halfSize + shardZ);
+		DrawOnPoint(halfSize, Xleft + shardX,				Ydown + halfSize - shardY,	Zfront - halfSize + shardZ);
+		DrawOnPoint(halfSize, Xleft + halfSize - shardX,	Ydown + halfSize - shardY,	Zfront - halfSize + shardZ);
+
+		if (Ydown + halfSize - shardY < 0)
+			shards = GL_FALSE;
+	}
 } cubes[cubesNumber];
 
 void InitializeCubes()
@@ -381,8 +472,12 @@ void DrawCubes()
 {
 	glColor3f(1, 1, 1);
 	for(GLint i = 0; i < cubesNumber; i++)
+	{
 		if (cubes[i].destroyed == GL_FALSE)
 			cubes[i].Draw();
+		else if (cubes[i].shards == GL_TRUE)
+			cubes[i].DrawParts();
+	}
 }
 void DrawLifes()
 {
@@ -460,16 +555,11 @@ void DrawRoom()
 		glTexCoord2f(1, 0);	glVertex3f(ROOM_HALF_WIDTH,		ROOM_HEIGHT,	-ROOM_HALF_LENGTH);
 		glTexCoord2f(1, 1);	glVertex3f(ROOM_HALF_WIDTH,		ROOM_HEIGHT,	ROOM_HALF_LENGTH);
 		glTexCoord2f(0, 1);	glVertex3f(-ROOM_HALF_WIDTH,	ROOM_HEIGHT,	ROOM_HALF_LENGTH);
-		// Front wall
-		//glTexCoord2f(0, 0);	glVertex3f(-ROOM_HALF_WIDTH,	0,				ROOM_HALF_LENGTH);
-		//glTexCoord2f(1, 0);	glVertex3f(ROOM_HALF_WIDTH,		0,				ROOM_HALF_LENGTH);
-		//glTexCoord2f(1, 1);	glVertex3f(ROOM_HALF_WIDTH,		ROOM_HEIGHT,	ROOM_HALF_LENGTH);
-		//glTexCoord2f(0, 1);	glVertex3f(-ROOM_HALF_WIDTH,	ROOM_HEIGHT,	ROOM_HALF_LENGTH);
 		// Back wall
-		//glTexCoord2f(0, 0);	glVertex3f(-ROOM_HALF_WIDTH,	0,				-ROOM_HALF_LENGTH);
-		//glTexCoord2f(1, 0);	glVertex3f(ROOM_HALF_WIDTH,		0,				-ROOM_HALF_LENGTH);
-		//glTexCoord2f(1, 1);	(ROOM_HALF_WIDTH,				ROOM_HEIGHT,	-ROOM_HALF_LENGTH);
-		//glTexCoord2f(0, 1);	glVertex3f(-ROOM_HALF_WIDTH,	ROOM_HEIGHT,	-ROOM_HALF_LENGTH);
+		glTexCoord2f(0, 0);	glVertex3f(-ROOM_HALF_WIDTH,	0,				-ROOM_HALF_LENGTH);
+		glTexCoord2f(1, 0);	glVertex3f(ROOM_HALF_WIDTH,		0,				-ROOM_HALF_LENGTH);
+		glTexCoord2f(1, 1);	glVertex3f(ROOM_HALF_WIDTH,		ROOM_HEIGHT,	-ROOM_HALF_LENGTH);
+		glTexCoord2f(0, 1);	glVertex3f(-ROOM_HALF_WIDTH,	ROOM_HEIGHT,	-ROOM_HALF_LENGTH);
 		// Right wall
 		glTexCoord2f(0, 0);	glVertex3f(ROOM_HALF_WIDTH,		0,				-ROOM_HALF_LENGTH);
 		glTexCoord2f(1, 0);	glVertex3f(ROOM_HALF_WIDTH,		0,				ROOM_HALF_LENGTH);
@@ -513,13 +603,12 @@ void CubesCollision()
 {
 	if (Z <= CubeWallZCoord1)		
 	{
-		if (Z > CubeWallZCoord2)	// 1st Cubes Layer
+		if (Z >= CubeWallZCoord2)	// 1st Cubes Layer
 		{
 			first = 0;
 			last  = cubesNumber / 2;
 		}
-
-		if (Z < CubeWallZCoord2)	// 2nd Cube Layer
+		else	// 2nd Cube Layer
 		{
 			first = cubesNumber / 2;
 			last = cubesNumber;
@@ -534,7 +623,10 @@ void CubesCollision()
 				cubes[i].hits++;
 				score += 10;
 				if (cubes[i].hits > CUBE_STATES)
+				{
 					cubes[i].destroyed = GL_TRUE;
+					cubes[i].shards = GL_TRUE;
+				}
 
 				if (frontCP > cubes[i].Zfront || backCP < cubes[i].Zback)
 					Zdir = -Zdir;
@@ -575,17 +667,6 @@ void CalculateShadowPoint()
 		}
 	}
 }
-//void CheckBorders()
-//{
-//	if (reflectorX < -ROOM_HALF_WIDTH)
-//		reflectorX = -ROOM_HALF_WIDTH;
-//	else if (reflectorX > ROOM_HALF_WIDTH)
-//		reflectorX = ROOM_HALF_WIDTH;
-//	if (reflectorY > ROOM_HEIGHT)
-//		reflectorY = ROOM_HEIGHT;
-//	else if (reflectorY < 0)
-//		reflectorY = 0;
-//}
 
 // Other
 void Resize(GLint w, GLint h) 
