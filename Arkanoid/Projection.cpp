@@ -3,8 +3,6 @@
 
 Projection::Projection()
 {
-	nShadow = 0;
-
 	ambientLight[0] = 0.3;
 	ambientLight[1] = 0.3;
 	ambientLight[2] = 0.3;
@@ -19,6 +17,9 @@ Projection::Projection()
 	specular[1] = 0.0;
 	specular[2] = 0.0;
 	specular[3] = 0.0;
+
+	glEnable(GL_COLOR_MATERIAL);
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 }
 
 Projection::~Projection(void)
@@ -42,10 +43,27 @@ void Projection::Init(GLfloat Zpoint, GLfloat Xlight, GLfloat Ylight, GLfloat Zl
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 	glEnable(GL_LIGHT0);
 
-	glEnable(GL_COLOR_MATERIAL);
-	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-	
 	gltMakeShadowMatrix(points, lightPos, shadowMat);	
+}
+
+void Projection::InitParts(GLfloat Ypoint, GLfloat Xlight, GLfloat Ylight, GLfloat Zlight)
+{
+	GLTVector3 points[3] = {{-1.0,   Ypoint,  -1.0},
+							{-1.0,	 Ypoint,   1.0},
+							{ 1.0,   Ypoint,   1.0}};
+
+	lightPosParts[0] = Xlight;
+	lightPosParts[1] = Ylight;
+	lightPosParts[2] = Zlight;
+	lightPosParts[3] = 0;
+
+	glLightfv(GL_LIGHT1, GL_AMBIENT, ambientLight);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseLight);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT1, GL_POSITION, lightPos);
+	glEnable(GL_LIGHT1);
+	
+	gltMakeShadowMatrix(points, lightPosParts, shadowMatParts);	
 }
 
 GLfloat Projection::gltGetVectorLength(GLTVector3 vNormal)

@@ -77,12 +77,12 @@ public:
 		shardY += SHARD_SPEED;
 		shardX += SHARD_SPEED / 2.5;
 
-		DrawOnPoint(halfSize, Xleft - shardX,				Ydown - shardY,				Zfront + shardZ);
-		DrawOnPoint(halfSize, Xleft + halfSize + shardX,	Ydown - shardY,				Zfront + shardZ);
+		DrawOnPoint(halfSize, Xleft - shardX,				Ydown - shardY,				Zfront + shardZ * 1.25);
+		DrawOnPoint(halfSize, Xleft + halfSize + shardX,	Ydown - shardY,				Zfront + shardZ * 1.25);
 		DrawOnPoint(halfSize, Xleft - shardX,				Ydown + halfSize - shardY,	Zfront + shardZ);
 		DrawOnPoint(halfSize, Xleft + halfSize + shardX,	Ydown + halfSize - shardY,	Zfront + shardZ);
-		DrawOnPoint(halfSize, Xleft - shardX,				Ydown - shardY,				Zfront - halfSize + shardZ);
-		DrawOnPoint(halfSize, Xleft + halfSize - shardX,	Ydown - shardY,				Zfront - halfSize + shardZ);
+		DrawOnPoint(halfSize, Xleft - shardX,				Ydown - shardY,				Zfront - halfSize + shardZ * 1.25);
+		DrawOnPoint(halfSize, Xleft + halfSize - shardX,	Ydown - shardY,				Zfront - halfSize + shardZ * 1.25);
 		DrawOnPoint(halfSize, Xleft + shardX,				Ydown + halfSize - shardY,	Zfront - halfSize + shardZ);
 		DrawOnPoint(halfSize, Xleft + halfSize - shardX,	Ydown + halfSize - shardY,	Zfront - halfSize + shardZ);
 
@@ -101,72 +101,71 @@ void InitializeCubes()
 }
 
 // Draw calls
-void DrawBall()
+void DrawBall(GLboolean isProjection)
 {
-	glColor3f(1, 1, 1);
+	if (isProjection == GL_TRUE)
+		glColor4f(0, 1, 0, 0.5);
+	else glColor3f(1, 1, 1);
+
 	glPushMatrix();	
 		glBindTexture(GL_TEXTURE_2D, otherTextures[BALL]);
 		glEnable(GL_TEXTURE_GEN_S);		
 		glEnable(GL_TEXTURE_GEN_T);		
 		glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
 		glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);	
-
 		run ? glTranslatef(X, Y, Z) 
 			: glTranslatef(reflectorX, reflectorY, ROOM_HALF_LENGTH - BALL_DIAMETER);
 		glutSolidSphere(BALL_DIAMETER / 2.0, 10.0, 10.0);
-
 		glDisable(GL_TEXTURE_GEN_S);		
 		glDisable(GL_TEXTURE_GEN_T);
 	glPopMatrix();	
 
-	if (run)
+	if (!isProjection)
 	{
-		X += Xdir;
-		Y += Ydir;
-		Z += Zdir;
-
-		leftCP  += Xdir;
-		rightCP += Xdir;
-		upCP    += Ydir;
-		downCP  += Ydir;
-		backCP  += Zdir;
-		frontCP += Zdir;
-	}
-	else
-	{
-		X = reflectorX;
-		Y = reflectorY;
-		Z = ROOM_HALF_LENGTH - BALL_DIAMETER;
-
-		leftCP  = X - BALL_DIAMETER / 2.0;
-		rightCP = X + BALL_DIAMETER / 2.0;
-		downCP	= Y - BALL_DIAMETER / 2.0;
-		upCP    = Y + BALL_DIAMETER / 2.0;
-		backCP  = Z - BALL_DIAMETER / 2.0;
-		frontCP = Z + BALL_DIAMETER / 2.0;
-	}
-}
-void DrawBallProjection()
-{
-	glBegin(GL_POLYGON);
-		for(GLfloat i = 0; i <= PROJECTION_SEGMENTS; i++)
+		if (run)
 		{
-			angle = 2.0 * 3.1415926 * i / PROJECTION_SEGMENTS;
-			dx = BALL_DIAMETER / 2.0 * cosf(angle);
-			dy = BALL_DIAMETER / 2.0 * sinf(angle);
-			glVertex3f(SPXCoord + dx, SPYCoord + dy, ROOM_HALF_LENGTH - 0.001);
+			X += Xdir;
+			Y += Ydir;
+			Z += Zdir;
+
+			leftCP  += Xdir;
+			rightCP += Xdir;
+			upCP    += Ydir;
+			downCP  += Ydir;
+			backCP  += Zdir;
+			frontCP += Zdir;
 		}
-	glEnd();
+		else
+		{
+			X = reflectorX;
+			Y = reflectorY;
+			Z = ROOM_HALF_LENGTH - BALL_DIAMETER;
+
+			leftCP  = X - BALL_DIAMETER / 2.0;
+			rightCP = X + BALL_DIAMETER / 2.0;
+			downCP	= Y - BALL_DIAMETER / 2.0;
+			upCP    = Y + BALL_DIAMETER / 2.0;
+			backCP  = Z - BALL_DIAMETER / 2.0;
+			frontCP = Z + BALL_DIAMETER / 2.0;
+		}
+	}
 }
 void DrawCubes()
 {
-	glColor3f(1, 1, 1);
 	for(GLint i = 0; i < cubesNumber; i++)
 	{
+		glColor3f(1, 1, 1);
 		if (cubes[i].destroyed == GL_FALSE)
 			cubes[i].Draw();
 		else if (cubes[i].shards == GL_TRUE)
+		{
 			cubes[i].DrawParts();
+			glColor3f(0, 0, 0);
+			glPushMatrix();
+				glMultMatrixf((GLfloat*)projection.shadowMatParts);
+				cubes[i].DrawParts();
+			glPopMatrix();
+		}
 	}
 }
 void DrawLifes()
@@ -285,7 +284,6 @@ void RoomCollision()
 				exit(0);
 			else reflectorX = 0, reflectorY = ROOM_HALF_HEIGHT;
 		}
-		SPdone = GL_FALSE;
 	}
 }
 void CubesCollision()
@@ -330,33 +328,6 @@ void CubesCollision()
 		}
 	}
 }
-void CalculateShadowPoint()
-{
-	GLfloat tmpXdir = Xdir, tmpYdir = Ydir, tmpZdir = Zdir;
-
-	SPXCoord = X;
-	SPYCoord = Y;
-	SPZCoord = Z;
-	
-	while(true)
-	{
-		SPXCoord += tmpXdir;
-		SPYCoord += tmpYdir;
-		SPZCoord += tmpZdir;
-
-		if (SPXCoord <= -ROOM_HALF_WIDTH || SPXCoord >= ROOM_HALF_WIDTH)
-			tmpXdir = -tmpXdir;
-		if (SPYCoord >= ROOM_HEIGHT || SPYCoord <= 0)
-			tmpYdir = -tmpYdir;
-		if (SPZCoord <= -ROOM_HALF_LENGTH)
-			tmpZdir = -tmpZdir;
-		else if (SPZCoord >= ROOM_HALF_LENGTH)
-		{
-			SPdone = GL_TRUE;
-			break;
-		}
-	}
-}
 
 // Other
 void Resize(GLint w, GLint h) 
@@ -381,7 +352,7 @@ void Render()
 	glLoadIdentity();
 
 	SetCamera();
-	DrawBall();		
+	DrawBall(GL_FALSE);		
 	DrawLifes();
 	DrawScores();
 	DrawCubes();
@@ -389,27 +360,18 @@ void Render()
 
 	if (Zdir > 0)	
 	{
-		if (SPdone)
-		{
-			glDisable(GL_DEPTH_TEST);
-			glDisable(GL_LIGHTING);
-			projection.Init(ROOM_HALF_LENGTH - 0.001, SPXCoord, SPYCoord, -ROOM_LENGTH);
-			glPushMatrix();
-				glMultMatrixf((GLfloat*)projection.shadowMat);
-				glEnable(GL_DEPTH_TEST);
-				glEnable(GL_LIGHTING);
-				DrawBallProjection();
-			glPopMatrix();
-		}
-		else if (run && Z > CubeWallZCoord1) 
-			CalculateShadowPoint();
+		projection.Init(ROOM_HALF_LENGTH - 0.01, X, Y, -ROOM_LENGTH*10);
+		glPushMatrix();
+			glMultMatrixf((GLfloat*)projection.shadowMat);
+			DrawBall(GL_TRUE);
+		glPopMatrix();
 	}
 
 	DrawReflector();
 	RoomCollision();
 	CubesCollision();
 
-	glClearColor(0, 1, 0.5, 0);
+	glClearColor(0, 1, 0.3, 0);
     glutSwapBuffers();
 }
 
@@ -469,6 +431,7 @@ int main(int argc, char* argv[])
 	
 	LoadTextures();
 	InitializeCubes();
+	projection.InitParts(0.001, 0, ROOM_HEIGHT, -ROOM_HALF_LENGTH);
 
 	glutMainLoop();
 	return 0;

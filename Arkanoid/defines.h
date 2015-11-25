@@ -15,7 +15,7 @@ GLfloat ROOM_HALF_WIDTH  = ROOM_WIDTH  / 2.0;
 #define BALL_DIAMETER	0.2
 
 GLfloat X = 0, Y = 0, Z = 0;
-GLfloat Xdir = SPEED, Ydir = SPEED, Zdir = SPEED;
+GLfloat Xdir = SPEED, Ydir = SPEED, Zdir = -SPEED;
 GLfloat leftCP =  -BALL_DIAMETER / 2.0,
 		rightCP =  BALL_DIAMETER / 2.0,
 		downCP	= -BALL_DIAMETER / 2.0,
@@ -25,7 +25,7 @@ GLfloat leftCP =  -BALL_DIAMETER / 2.0,
 
 // Cubes declarations
 #define CUBE_STATES		3
-#define SHARD_SPEED		0.01
+#define SHARD_SPEED		0.003
 
 GLfloat CubeWallZCoord1  = -ROOM_HALF_LENGTH * 3 / 5.0,
 		CubeWallZCoord2  = -ROOM_HALF_LENGTH * 4 / 5.0;
@@ -44,9 +44,5 @@ GLboolean run = GL_FALSE;
 #define REFLECTOR_SIZE	0.5
 GLfloat reflectorX = 0, reflectorY = ROOM_HALF_HEIGHT;
 
-// Light and shadow declarations 
-#define PROJECTION_SEGMENTS	50.0
+// Light and shadow
 Projection projection;
-GLfloat angle, dx, dy;
-GLfloat SPXCoord, SPYCoord, SPZCoord;	// shadow coord
-GLboolean SPdone = GL_FALSE;

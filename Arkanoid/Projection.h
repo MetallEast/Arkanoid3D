@@ -22,11 +22,11 @@ class Projection
 	void gltGetPlaneEquation(GLTVector3 vPoint1, GLTVector3 vPoint2, GLTVector3 vPoint3, GLTVector3 vPlane);
 	void gltMakeShadowMatrix(GLTVector3 vPoints[3], GLTVector4 vLightPos, GLTMatrix destMat);
 public:
-	GLint nShadow;
-	GLTMatrix shadowMat;
-	GLfloat	lightPos[4];
+	GLTMatrix shadowMat, shadowMatParts;
+	GLfloat	lightPos[4], lightPosParts[4];
 
 	void Init(GLfloat, GLfloat, GLfloat, GLfloat);
+	void InitParts(GLfloat, GLfloat, GLfloat, GLfloat);
 	Projection();
 	~Projection(void);
 };
