@@ -3,6 +3,27 @@
 #include "Textures.h"
 
 
+struct Camera
+{
+public:
+	GLfloat angle;
+	GLfloat dirx, dirz;
+	GLfloat x, z;
+	GLfloat tmp, move;
+	GLint xAnchor;
+	Camera()
+	{
+		angle = 0;
+		dirx = 0;
+		dirz = -1;
+		x = 0;
+		z = 0;
+		tmp = 0;
+		move = 0;
+		xAnchor = -1;		
+	}
+}	camera;
+
 struct Cube
 {
 	GLfloat Xleft, Xright, Yup, Ydown, Zfront, Zback;
@@ -103,21 +124,26 @@ void InitializeCubes()
 // Draw calls
 void DrawBall(GLboolean isProjection)
 {
-	if (isProjection == GL_TRUE)
-		glColor4f(0, 1, 0, 0.5);
-	else glColor3f(1, 1, 1);
-
+	glColor3f(1, 1, 1);
 	glPushMatrix();	
-		glBindTexture(GL_TEXTURE_2D, otherTextures[BALL]);
-		glEnable(GL_TEXTURE_GEN_S);		
-		glEnable(GL_TEXTURE_GEN_T);		
-		glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
-		glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);	
+		if (!isProjection)
+		{
+			glBindTexture(GL_TEXTURE_2D, otherTextures[BALL]);
+			glEnable(GL_TEXTURE_GEN_S);		
+			glEnable(GL_TEXTURE_GEN_T);		
+			glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+			glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);	
+		}
+
 		run ? glTranslatef(X, Y, Z) 
 			: glTranslatef(reflectorX, reflectorY, ROOM_HALF_LENGTH - BALL_DIAMETER);
 		glutSolidSphere(BALL_DIAMETER / 2.0, 10.0, 10.0);
-		glDisable(GL_TEXTURE_GEN_S);		
-		glDisable(GL_TEXTURE_GEN_T);
+
+		if (!isProjection)
+		{
+			glDisable(GL_TEXTURE_GEN_S);		
+			glDisable(GL_TEXTURE_GEN_T);
+		}
 	glPopMatrix();	
 
 	if (!isProjection)
@@ -342,9 +368,9 @@ void Resize(GLint w, GLint h)
 }
 void SetCamera()
 {
-	gluLookAt(0,	ROOM_HALF_HEIGHT,	ROOM_HALF_LENGTH + ROOM_HALF_WIDTH * 2.5,		
-			  0,	ROOM_HALF_HEIGHT,	0,
-			  0,	1,					0);
+	gluLookAt(camera.x,					ROOM_HALF_HEIGHT + camera.move,	ROOM_HALF_LENGTH + ROOM_HALF_WIDTH * 2.5 - abs(camera.move),
+			  camera.x + camera.dirx,	ROOM_HALF_HEIGHT,				camera.z + camera.dirz,
+			  0,						1,								0);
 }
 void Render() 
 { 
@@ -358,54 +384,77 @@ void Render()
 	DrawCubes();
 	DrawRoom();
 
-	if (Zdir > 0)	
-	{
-		projection.Init(ROOM_HALF_LENGTH - 0.01, X, Y, -ROOM_LENGTH*10);
-		glPushMatrix();
-			glMultMatrixf((GLfloat*)projection.shadowMat);
-			DrawBall(GL_TRUE);
-		glPopMatrix();
-	}
+	projection.Init(ROOM_HALF_LENGTH - 0.01, X, Y, -ROOM_LENGTH*10);
+	glPushMatrix();
+		glMultMatrixf((GLfloat*)projection.shadowMat);
+		DrawBall(GL_TRUE);
+	glPopMatrix();
 
 	DrawReflector();
 	RoomCollision();
 	CubesCollision();
 
-	glClearColor(0, 1, 0.3, 0);
+	glClearColor(0.3, 0.3, 0.3, 0);
     glutSwapBuffers();
 }
 
-// Control keys
+// Control keyboard
 void Keys(unsigned char key, GLint x, GLint y) 
 { 
 	if (key == 27)
 		exit(0);
 }
-void MouseMove(GLint x, GLint y) 
+void PressKey(GLint key, GLint x, GLint y) 
+{ 
+	if (key == GLUT_KEY_UP && camera.move < ROOM_HALF_LENGTH)	
+		camera.move += 0.05f;
+	if (key == GLUT_KEY_DOWN && camera.move > -ROOM_HALF_LENGTH)
+		camera.move -= 0.05f;
+} 
+// Control mouse
+void PassiveMouseMove(GLint x, GLint y) 
 {
-    GLint viewport[4];
-    GLdouble modelview[16];
-    GLdouble projection[16];
-    GLfloat winX, winY, winZ;
-    GLdouble posX, posY, posZ;
+	GLint viewport[4];
+	GLdouble modelview[16];
+	GLdouble projection[16];
+	GLfloat winX, winY, winZ;
+	GLdouble posX, posY, posZ;
  
-    glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-    glGetDoublev(GL_PROJECTION_MATRIX, projection);
-    glGetIntegerv(GL_VIEWPORT, viewport);
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	glGetIntegerv(GL_VIEWPORT, viewport);
  
-    winX = (GLfloat)x;
-    winY = (GLfloat)viewport[3] - (GLfloat)y;
-    glReadPixels(x, GLint(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
+	winX = (GLfloat)x;
+	winY = (GLfloat)viewport[3] - (GLfloat)y;
+	glReadPixels(x, GLint(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
  
-    gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+	gluUnProject(winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
 
 	reflectorX = posX;
 	reflectorY = posY;
+}
+void MouseMove(GLint x, GLint y) 
+{ 	
+    if (camera.xAnchor >= 0) 
+	{
+		camera.tmp  = (x - camera.xAnchor) * 0.001f;
+		camera.dirx =  sin(camera.angle + camera.tmp);
+		camera.dirz = -cos(camera.angle + camera.tmp);
+	}
 }
 void MouseButton(GLint button, GLint state, GLint x, GLint y) 
 {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) 
 		run = GL_TRUE;
+	if (button == GLUT_RIGHT_BUTTON) 
+	{
+		if (state == GLUT_UP) 
+		{
+			camera.angle += camera.tmp;
+			camera.xAnchor = -1;
+		}
+		else camera.xAnchor = x;
+	}
 }
 
 int main(int argc, char* argv[])
@@ -420,7 +469,9 @@ int main(int argc, char* argv[])
 	glutReshapeFunc(Resize);
 	glutIdleFunc(Render);
 	glutKeyboardFunc(Keys);
-	glutPassiveMotionFunc(MouseMove);
+	glutSpecialFunc(PressKey);
+	glutPassiveMotionFunc(PassiveMouseMove);
+	glutMotionFunc(MouseMove);
 	glutMouseFunc(MouseButton);
 	ShowCursor(GL_FALSE);
 
